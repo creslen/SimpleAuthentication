@@ -64,27 +64,32 @@ const SignUpForm = ({ onSignUp }) => {
   };
 
   return (
-    <div>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignUp}>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-        </div>
-        <div>
-          <label>Password:</label>
-          <input type={showPassword ? 'text' : 'password'} value={password} onChange={handlePasswordChange} required />
-          <button type="button" onClick={toggleShowPassword}>{showPassword ? 'Hide' : 'Show'}</button>
-        </div>
-        <div>
-          <label>Confirm Password:</label>
-          <input type={showConfirmPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
-          <button type="button" onClick={toggleShowConfirmPassword}>{showConfirmPassword ? 'Hide' : 'Show'}</button>
-        </div>
-        <div>Password Strength: {passwordStrength}</div>
-        <button type="submit">Sign Up</button>
-        <button type="button" onClick={handleGeneratePassword}>Generate Strong Password</button>
-      </form>
+    <div class="card">
+      <div class="card-body">
+        <h2>Sign Up</h2>
+          <form onSubmit={handleSignUp}>
+              <div class="form-floating mb-2">
+                <input type="email" class="form-control" placeholder="name@example.com" id="floatingInput"  value={email} onChange={(e) => setEmail(e.target.value)} required />
+                <label for="floatingInput">Email address</label>
+              </div>
+
+              <div class="form-floating mb-2">
+                <input  class="form-control" placeholder="Password" id="floatingPassword"  type={showPassword ? 'text' : 'password'} value={password} onChange={handlePasswordChange} required />
+                <label for="floatingPassword">Password</label>
+                <button type="button" class="btn btn-outline-primary mt-2" onClick={toggleShowPassword}>{showPassword ? 'Hide' : 'Show'}</button>
+              </div>
+
+              <div class="form-floating mb-2">
+                <input class="form-control" placeholder="Confirm Password" id="floatingConPassword"type={showConfirmPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+                <label for="floatingConPassword">Confirm Password</label>
+                <button type="button" class="btn btn-outline-primary mt-2" onClick={toggleShowConfirmPassword}>{showConfirmPassword ? 'Hide' : 'Show'}</button>
+              </div>
+
+              <div>Password Strength: {passwordStrength}</div>
+                <button type="submit" class="btn btn-success">Sign Up</button>
+                <button type="button" class="btn btn-outline-secondary" onClick={handleGeneratePassword}>Generate Strong Password</button>
+          </form>
+      </div>
     </div>
   );
 };
