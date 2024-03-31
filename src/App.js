@@ -1,10 +1,22 @@
 import React, { useState } from 'react';
 
+const generateStrongPassword = () => {
+  const length = 12; // You can adjust the length of the generated password
+  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*';
+  let password = '';
+  for (let i = 0; i < length; i++) {
+    password += charset.charAt(Math.floor(Math.random() * charset.length));
+  }
+  return password;
+};
+
 const SignUpForm = ({ onSignUp }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [passwordStrength, setPasswordStrength] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -28,12 +40,27 @@ const SignUpForm = ({ onSignUp }) => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
     // Check password strength
-    const regex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+    const regex = /^(?=.*\d)(?=.*[a-zA-Z]).{8,}$/;
     if (regex.test(e.target.value)) {
       setPasswordStrength('strong');
     } else {
       setPasswordStrength('weak');
     }
+  };
+
+  const handleGeneratePassword = () => {
+    const generatedPassword = generateStrongPassword();
+    setPassword(generatedPassword);
+    setConfirmPassword(generatedPassword);
+    setPasswordStrength('strong');
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
 
   return (
@@ -46,14 +73,17 @@ const SignUpForm = ({ onSignUp }) => {
         </div>
         <div>
           <label>Password:</label>
-          <input type="password" value={password} onChange={handlePasswordChange} required />
+          <input type={showPassword ? 'text' : 'password'} value={password} onChange={handlePasswordChange} required />
+          <button type="button" onClick={toggleShowPassword}>{showPassword ? 'Hide' : 'Show'}</button>
         </div>
         <div>
           <label>Confirm Password:</label>
-          <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <input type={showConfirmPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+          <button type="button" onClick={toggleShowConfirmPassword}>{showConfirmPassword ? 'Hide' : 'Show'}</button>
         </div>
         <div>Password Strength: {passwordStrength}</div>
         <button type="submit">Sign Up</button>
+        <button type="button" onClick={handleGeneratePassword}>Generate Strong Password</button>
       </form>
     </div>
   );
@@ -62,6 +92,7 @@ const SignUpForm = ({ onSignUp }) => {
 const LoginForm = ({ onLogin, initialEmail }) => {
   const [email, setEmail] = useState(initialEmail || '');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -75,6 +106,10 @@ const LoginForm = ({ onLogin, initialEmail }) => {
     }
   };
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <div>
       <h2>Login</h2>
@@ -85,7 +120,8 @@ const LoginForm = ({ onLogin, initialEmail }) => {
         </div>
         <div>
           <label>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <button type="button" onClick={toggleShowPassword}>{showPassword ? 'Hide' : 'Show'}</button>
         </div>
         <button type="submit">Login</button>
       </form>
